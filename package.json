@@ -1,0 +1,28 @@
+{
+  "name": "figma-styles-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "tsc && node ./built/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mwa22/figma-styles-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mwa22/figma-styles-js/issues"
+  },
+  "homepage": "https://github.com/Mwa22/figma-styles-js#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.10.1",
+    "typescript": "^4.4.3"
+  }
+}
