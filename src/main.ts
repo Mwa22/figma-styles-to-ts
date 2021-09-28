@@ -4,16 +4,15 @@ import { Node } from "./types/ast";
 import {
 	colorNameRecursively,
 	formatColorsToTSFile,
-	getEnv,
 	rgbToHex,
-} from "./utils";
+} from "./utils/colors";
+import { getEnv } from "./utils/env";
 
-require("dotenv").config();
 const axios = require("axios");
 const fs = require("fs");
 
 // Get environment variables
-const { personal_token, file_key, constants_path } = getEnv();
+const { personal_token, file_key, out_path } = getEnv();
 
 async function main() {
 	// Get axios instance to fetch data from api
@@ -93,10 +92,7 @@ async function main() {
 	}
 
 	// Create colors file
-	fs.writeFileSync(
-		`${constants_path}/colors.ts`,
-		formatColorsToTSFile(colors)
-	);
+	fs.writeFileSync(`${out_path}/colors.ts`, formatColorsToTSFile(colors));
 }
 
 main();

@@ -10,7 +10,7 @@
   "scripts": {
     "start": "npm run build && node ./built/main.js",
     "build": "tsc",
-    "release": "release-it"
+    "release": "npm run tsc && release-it"
   },
   "bin": {
     "figma-styles-to-ts": "/built/main.js"
