@@ -2,8 +2,11 @@
   "name": "figma-styles-to-ts",
   "version": "1.0.2",
   "description": "Generate typescript files from figma styles.",
-  "author": "Thomas Michel <thomas.michel@live.be>",
-  "main": "src/main.ts",
+  "author": {
+    "name": "Thomas Michel",
+    "email": "thomas.michel@live.be"
+  },
+  "main": "built/main.js",
   "scripts": {
     "start": "npm run build && node ./built/main.js",
     "build": "tsc",
@@ -14,23 +17,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mwa22/figma-styles-js.git"
+    "url": "git+https://github.com/Mwa22/figma-styles-to-ts.git"
   },
   "keywords": [
     "figma",
     "ts",
     "typescript",
     "styles",
-    "generate"
+    "generate",
+    "code-generation",
+    "fetch",
+    "data fetching"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Mwa22/figma-styles-js/issues"
+    "url": "https://github.com/Mwa22/figma-styles-to-ts/issues"
   },
-  "homepage": "https://github.com/Mwa22/figma-styles-js#readme",
+  "homepage": "https://github.com/Mwa22/figma-styles-to-ts#readme",
   "dependencies": {
     "axios": "^0.21.4",
-    "dotenv": "^10.0.0",
     "nconf": "^0.11.3"
   },
   "devDependencies": {
