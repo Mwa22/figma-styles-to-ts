@@ -1,33 +1,31 @@
+#! /usr/bin/env node
 import { GetFileNodesResult, GetFileStylesResult } from "./types/api";
 import { Node } from "./types/ast";
-import { colorNameRecursively, formatColorsToTSFile, rgbToHex } from "./utils";
+import {
+	colorNameRecursively,
+	formatColorsToTSFile,
+	getEnv,
+	rgbToHex,
+} from "./utils";
 
 require("dotenv").config();
 const axios = require("axios");
 const fs = require("fs");
 
 // Get environment variables
-const fileKey = process.env.FILE_KEY;
-const personalToken = process.env.PERSONNAL_TOKEN;
-
-if (!personalToken || !fileKey) {
-	console.error(
-		"Please pass PERSONNAL_TOKEN and FILE_KEY in .env and re-run"
-	);
-	process.exit(1);
-}
-
-// Get axios instance to fetch data from api
-const instance = axios.create({
-	baseURL: "https://api.figma.com/v1",
-	headers: {
-		common: {
-			"X-Figma-Token": personalToken,
-		},
-	},
-});
+const { personal_token, file_key, constants_path } = getEnv();
 
 async function main() {
+	// Get axios instance to fetch data from api
+	const instance = axios.create({
+		baseURL: "https://api.figma.com/v1",
+		headers: {
+			common: {
+				"X-Figma-Token": personal_token,
+			},
+		},
+	});
+
 	/** Get all colors node-id */
 	let colors_id: string[];
 
@@ -38,7 +36,7 @@ async function main() {
 				meta: { styles },
 			},
 		}: { data: GetFileStylesResult } = await instance.get(
-			`/files/${fileKey}/styles`
+			`/files/${file_key}/styles`
 		);
 
 		// Get all node ids
@@ -62,7 +60,7 @@ async function main() {
 		const {
 			data: { nodes },
 		}: { data: GetFileNodesResult } = await instance.get(
-			`/files/${fileKey}/nodes?ids=${colors_id.join(",")}`
+			`/files/${file_key}/nodes?ids=${colors_id.join(",")}`
 		);
 
 		Object.values(nodes).forEach((node) => {
@@ -96,7 +94,7 @@ async function main() {
 
 	// Create colors file
 	fs.writeFileSync(
-		process.cwd() + "/src/colors.ts",
+		`${constants_path}/colors.ts`,
 		formatColorsToTSFile(colors)
 	);
 }

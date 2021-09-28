@@ -1,0 +1,6 @@
+/node_modules
+/src
+.env
+./figma.config.json
+./tsconfig.json
+.gitignore
