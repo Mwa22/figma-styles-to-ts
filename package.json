@@ -13,7 +13,8 @@
     "release": "npm run build && release-it"
   },
   "bin": {
-    "figma-styles-to-ts": "/built/main.js"
+    "figma-styles-to-ts": "/built/main.js",
+    "figma-styles-reset": "/built/reset.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "keywords": [
     "figma",
+    "figma-api",
     "ts",
     "typescript",
     "styles",
