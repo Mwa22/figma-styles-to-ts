@@ -1,6 +1,6 @@
 {
   "name": "figma-styles-to-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate typescript files from figma styles.",
   "author": "Thomas Michel <thomas.michel@live.be>",
   "main": "src/main.ts",
