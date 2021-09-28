@@ -7,11 +7,9 @@ export function getEnv(): {
 	file_key: string;
 	out_path: string;
 } {
-	const token_file = `${process.cwd()}/node_modules/figma-styles-to-ts/.token`;
+	const token_file = `${process.cwd()}/node_modules/figma-styles-to-ts/token.json`;
 
-	nconf.argv().file({ file: "./figma.config.json" }).file({
-		file: token_file,
-	});
+	nconf.argv().file("./figma.config.json").file("token", token_file);
 
 	const personal_token: string = nconf.get("token");
 	const file_key: string = nconf.get("fileKey");
@@ -26,7 +24,7 @@ export function getEnv(): {
 
 	// Create token file
 	if (!fs.existsSync(token_file)) {
-		fs.writeFileSync(token_file, `token = ${personal_token}`);
+		fs.writeFileSync(token_file, JSON.stringify({ token: personal_token }));
 	}
 
 	if (!out_path || !out_path.length || !file_key || !file_key.length) {
