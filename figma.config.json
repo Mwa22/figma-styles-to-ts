@@ -1,3 +1,6 @@
 {
-    "constants_folder_path": "src/components/constants"
+    "outDir": "src/components/constants",
+    "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
+    "color": true,
+    "colorTemplate": "palette"
 }
