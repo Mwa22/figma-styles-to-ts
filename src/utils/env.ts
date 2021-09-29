@@ -1,7 +1,8 @@
+import { ColorTemplateEnum } from "../colors/Template";
+
 const nconf = require("nconf");
 const fs = require("fs");
 const path = require("path");
-const { ColorTemplateEnum } = require("./colors");
 
 export interface ENV {
 	PersonalToken: string;
