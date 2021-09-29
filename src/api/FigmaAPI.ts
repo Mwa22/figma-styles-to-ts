@@ -3,11 +3,11 @@ import {
 	GetFileStylesResult,
 	StyleMetadata,
 } from "../types/api";
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { ENV } from "../utils/env";
 
 class FigmaAPI {
-	_instance: any;
+	_instance: AxiosInstance;
 	_env: ENV;
 
 	constructor(env: ENV) {

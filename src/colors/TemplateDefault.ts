@@ -84,7 +84,7 @@ class TemplateDefault extends Template {
 		});
 
 		// Create colors file
-		await fs.writeFile(
+		await fs.promises.writeFile(
 			`${this._env.OutPath}/colors.ts`,
 			this._formatContainerToCode(colors)
 		);

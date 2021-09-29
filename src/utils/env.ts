@@ -1,8 +1,8 @@
 import { ColorTemplateEnum } from "../colors/Template";
 
-const nconf = require("nconf");
-const fs = require("fs");
-const path = require("path");
+import * as nconf from "nconf";
+import * as fs from "fs";
+import * as path from "path";
 
 export interface ENV {
 	PersonalToken: string;
@@ -42,6 +42,7 @@ export async function getEnv(): Promise<ENV> {
 		);
 		process.exit(1);
 	}
+	console.log(color_template);
 	if (!Object.values(ColorTemplateEnum).includes(color_template)) {
 		console.error(
 			`Wrong figma config entry: colorTemplate. You must choose one of these values: [${Object.values(
@@ -56,7 +57,7 @@ export async function getEnv(): Promise<ENV> {
 	// Create token file
 	if (!fs.existsSync(token_file)) {
 		try {
-			await fs.writeFile(
+			await fs.promises.writeFile(
 				token_file,
 				JSON.stringify({ token: personal_token })
 			);
@@ -86,7 +87,7 @@ export async function getEnv(): Promise<ENV> {
 	// Create outDir folder
 	if (!fs.existsSync(out_path)) {
 		try {
-			await fs.mkdirSync(out_path, { recursive: true });
+			await fs.promises.mkdir(out_path, { recursive: true });
 			console.log(`Output folder created !`);
 		} catch (err) {
 			console.error("Couldn't create the output folder: " + err.message);
