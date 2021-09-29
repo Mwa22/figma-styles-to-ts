@@ -1,22 +1,22 @@
-import { ENV } from "../utils/env";
 import { Node } from "../types/ast";
-import Template from "./Template";
+import ColorTemplate from "./Template";
+import Config from "../config/Config";
 
 interface Color {
 	name: string;
 	hex: string;
 }
 
-class TemplateDefault extends Template {
-	constructor(env: ENV) {
-		super(env);
+class ColorTemplateDefault extends ColorTemplate {
+	constructor(config: Config) {
+		super(config);
 	}
 
-	async init() {
-		super.init();
+	init() {
+		return super.init();
 	}
 
-	_getColorFromNode(node: any): Color {
+	_getColorFromNode(node: any): Color | undefined {
 		const doc: Node<"RECTANGLE"> = node.document as any;
 
 		// Test correct color type
@@ -28,11 +28,26 @@ class TemplateDefault extends Template {
 				(fill) => fill.blendMode !== "NORMAL" || fill.type !== "SOLID"
 			)
 		) {
-			throw new Error(`The color "${doc.name}" could not be retrieved`);
+			throw new Error(`The color "${doc.name}" could not be retrieved\n`);
 		}
 
 		const c = doc.fills[0]?.color;
-		const hex = Template.rgbToHex(c.r * 256, c.g * 256, c.b * 256);
+		const hex = ColorTemplate.rgbToHex(c.r * 256, c.g * 256, c.b * 256);
+
+		//Test name format
+		const regex = new RegExp(`^${this._config.color.base}/*`);
+		if (this._config.color.base !== "") {
+			if (!regex.test(doc.name)) {
+				return;
+			} else {
+				// Remove base from name
+				doc.name = doc.name.slice(
+					this._config.color.base.length + 1,
+					doc.name.length
+				);
+			}
+		}
+
 		return { hex, name: doc.name };
 	}
 
@@ -54,15 +69,15 @@ class TemplateDefault extends Template {
 	_formatContainerToCode(container: any): string {
 		return `export interface Colors ${JSON.stringify(container, null, 4)}
 
-        const COLORS: Colors = ${JSON.stringify(container, null, 4)}
+const COLORS: Colors = ${JSON.stringify(container, null, 4)}
         
-        export default COLORS;
+export default COLORS;
         `;
 	}
 
 	async generate() {
 		if (!this._nodes) {
-			throw new Error("No color fetched from api.");
+			throw new Error("No color fetched from api.\n");
 		}
 
 		// Container
@@ -71,8 +86,10 @@ class TemplateDefault extends Template {
 		// Add colors to container
 		Object.values(this._nodes).forEach((node) => {
 			try {
-				const { hex, name } = this._getColorFromNode(node);
+				const color = this._getColorFromNode(node);
+				if (!color) return;
 
+				const { hex, name } = color;
 				const names = name
 					.split("/")
 					.map((n) => (isNaN(parseInt(n)) ? n : `T${n}`));
@@ -83,14 +100,8 @@ class TemplateDefault extends Template {
 			}
 		});
 
-		// Create colors file
-		await fs.promises.writeFile(
-			`${this._env.OutPath}/colors.ts`,
-			this._formatContainerToCode(colors)
-		);
-
-		console.log("colors.ts created successfully !");
+		await this._generateFile(colors, this._formatContainerToCode(colors));
 	}
 }
 
-export default TemplateDefault;
+export default ColorTemplateDefault;

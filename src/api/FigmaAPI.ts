@@ -4,45 +4,42 @@ import {
 	StyleMetadata,
 } from "../types/api";
 import axios, { AxiosInstance } from "axios";
-import { ENV } from "../utils/env";
+import Config from "../config/Config";
 
 class FigmaAPI {
 	_instance: AxiosInstance;
-	_env: ENV;
+	_config: Config;
 
-	constructor(env: ENV) {
-		this._env = env;
+	constructor(config: Config) {
+		this._config = config;
 
 		// Get axios instance to fetch data from api
 		this._instance = axios.create({
 			baseURL: "https://api.figma.com/v1",
 			headers: {
 				common: {
-					"X-Figma-Token": env.PersonalToken,
+					"X-Figma-Token": config.personalToken,
 				},
 			},
 		});
 	}
 
-	async getStylesByFileKey(): Promise<StyleMetadata[]> {
-		const {
-			data: {
-				meta: { styles },
-			},
-		}: { data: GetFileStylesResult } = await this._instance.get(
-			`/files/${this._env.FileKey}/styles`
-		);
-
-		return styles;
+	getStylesByFileKey(): Promise<StyleMetadata[]> {
+		return this._instance
+			.get(`/files/${this._config.fileKey}/styles`)
+			.then(
+				({ data }: { data: GetFileStylesResult }) => data.meta.styles
+			);
 	}
 
-	async getNodesColor(colors_id: string[]) {
-		const {
-			data: { nodes },
-		}: { data: GetFileNodesResult } = await this._instance.get(
-			`/files/${this._env.FileKey}/nodes?ids=${colors_id.join(",")}`
-		);
-		return nodes;
+	getNodesColor(colors_id: string[]) {
+		return this._instance
+			.get(
+				`/files/${this._config.fileKey}/nodes?ids=${colors_id.join(
+					","
+				)}`
+			)
+			.then(({ data }: { data: GetFileNodesResult }) => data.nodes);
 	}
 }
 

@@ -1,6 +1,10 @@
 {
-    "outDir": "src/components/constants",
+    "token": "243925-68f555ef-26b7-4220-94e5-c85441167d37",
     "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
-    "color": true,
-    "colorTemplate": "palette"
+    "color": {
+        "disable": false,
+        "outDir": "./src/components/constants",
+        "template": "palette",
+        "base": ""
+    }
 }

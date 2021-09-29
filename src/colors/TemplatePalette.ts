@@ -1,6 +1,6 @@
-import { ENV } from "../utils/env";
 import { Node } from "../types/ast";
-import Template from "./Template";
+import ColorTemplate from "./Template";
+import Config from "../config/Config";
 
 interface Color {
 	hex: string;
@@ -21,16 +21,16 @@ enum ColorPaletteEnum {
 	T700 = 700,
 }
 
-class TemplatePalette extends Template {
-	constructor(env: ENV) {
-		super(env);
+class ColorTemplatePalette extends ColorTemplate {
+	constructor(config: Config) {
+		super(config);
 	}
 
-	async init() {
-		super.init();
+	init() {
+		return super.init();
 	}
 
-	_getColorFromNode(node: any): Color {
+	_getColorFromNode(node: any): Color | undefined {
 		const doc: Node<"RECTANGLE"> = node.document as any;
 
 		// Test correct color type
@@ -42,53 +42,88 @@ class TemplatePalette extends Template {
 				(fill) => fill.blendMode !== "NORMAL" || fill.type !== "SOLID"
 			)
 		) {
-			throw new Error(`The color "${doc.name}" could not be retrieved`);
+			throw new Error(`The color "${doc.name}" could not be retrieved\n`);
 		}
 
 		const c = doc.fills[0]?.color;
-		const hex = Template.rgbToHex(c.r * 256, c.g * 256, c.b * 256);
+		const hex = ColorTemplate.rgbToHex(c.r * 256, c.g * 256, c.b * 256);
 
 		//Test name format
+		const regex = new RegExp(`^${this._config.color.base}/*`);
+		if (this._config.color.base !== "") {
+			if (!regex.test(doc.name)) {
+				return;
+			} else {
+				// Remove base from name
+				doc.name = doc.name.slice(
+					this._config.color.base.length + 1,
+					doc.name.length
+				);
+			}
+		}
+
 		const names = doc.name.split("/");
+
+		if (names.length === 1) {
+			return { hex, name: doc.name };
+		}
+
 		if (
 			names.length > 2 ||
 			Number.isNaN(parseInt(names[1])) ||
-			Object.values(ColorPaletteEnum).includes(parseInt(names[1]))
+			!Object.values(ColorPaletteEnum).includes(parseInt(names[1]))
 		) {
 			throw new Error(
-				`The color "${doc.name}" has not a correct format. (see palette format)`
+				`The color "${doc.name}" has not a correct format. (see palette format)\n`
 			);
 		}
 
 		return {
 			hex,
-			name: doc.name,
-			type: names.length === 1 ? undefined : parseInt(names[1]),
+			name: names[0],
+			type: parseInt(names[1]),
 		};
 	}
 
 	_formatContainerToCode(container: any): string {
 		return `export type Color = string;
 
-        export interface ColorPalette {
-			${Object.keys(ColorPaletteEnum)
-				.map((type) => `${type}: Color;`)
-				.join("\n")}
-        }
+export interface ColorPalette {
+${Object.values(ColorPaletteEnum)
+	.filter((value) => !Number.isNaN(parseInt(value as string)))
+	.map((type) => `\tT${type}: Color;`)
+	.join("\n")}
+}
         
-        export interface Colors {
-            ${Object.entries(container)
-				.map((name, color) => {
-					return `${name}: ${
-						typeof color === "string" ? "Color" : "ColorPalette"
-					};`;
-				})
-				.join("\n")}
-        }
+export interface Colors {
+${Object.entries(container)
+	.map(([name, color]) => {
+		return `\t${name}: ${
+			typeof color === "string" ? "Color" : "ColorPalette"
+		};`;
+	})
+	.join("\n")}
+}
 
-        const COLORS: Colors = ${JSON.stringify(container, null, 4)}
+const COLORS: Colors = {
+${Object.entries(container)
+	.map(([name, color]) => {
+		if (typeof color === "string") return `\t${name}: "${color}",`;
+		return `\t${name}: {
+${Object.entries(color)
+	.sort(
+		(left, right) =>
+			parseInt(left[0].slice(1, left[0].length)) -
+			parseInt(right[0].slice(1, right[0].length))
+	)
+	.map(([type, value]) => `\t\t${type}: "${value}",`)
+	.join("\n")}
+	},`;
+	})
+	.join("\n")}
+};
         
-        export default COLORS;
+export default COLORS;
         `;
 	}
 
@@ -103,7 +138,10 @@ class TemplatePalette extends Template {
 		// Add colors to container
 		Object.values(this._nodes).forEach((node) => {
 			try {
-				const { hex, name, type } = this._getColorFromNode(node);
+				const color = this._getColorFromNode(node);
+				if (!color) return;
+
+				const { hex, name, type } = color;
 				if (colors[name] && typeof colors[name] !== "string") {
 					colors[name][`T${type}`] = hex;
 				} else {
@@ -117,26 +155,21 @@ class TemplatePalette extends Template {
 
 		// Test each colors that have all types
 		Object.keys(colors).forEach((name) => {
-			const types = Object.values(colors[name]);
-			const missingEl = Object.keys(ColorPaletteEnum).findIndex(
-				(type) => !types.includes(type)
-			);
+			if (typeof colors[name] === "string") return;
+			const types = Object.keys(colors[name]);
+			const missingEl = Object.keys(ColorPaletteEnum)
+				.filter((key) => Number.isNaN(parseInt(key)))
+				.findIndex((type) => !types.includes(type));
 			if (missingEl !== -1) {
 				console.error(
-					`The color '${name}' has missing types. (see template palette)`
+					`The color '${name}' has missing types. (see template palette)\n`
 				);
 				delete colors[name];
 			}
 		});
 
-		// Create colors file
-		await fs.promises.writeFile(
-			`${this._env.OutPath}/colors.ts`,
-			this._formatContainerToCode(colors)
-		);
-
-		console.log("colors.ts created successfully !");
+		await this._generateFile(colors, this._formatContainerToCode(colors));
 	}
 }
 
-export default TemplatePalette;
+export default ColorTemplatePalette;

@@ -1,23 +1,24 @@
 import FigmaAPI from "../api/FigmaAPI";
-import { ENV } from "../utils/env";
+import Config from "../config/Config";
+import * as fs from "fs";
 
 export enum ColorTemplateEnum {
 	default = "default",
 	palette = "palette",
 }
 
-class Template {
-	_env: ENV;
+class ColorTemplate {
+	_config: Config;
 	_api: FigmaAPI;
 	_nodes: any;
 
-	constructor(env: ENV) {
-		this._api = new FigmaAPI(env);
-		this._env = env;
+	constructor(config: Config) {
+		this._api = new FigmaAPI(config);
+		this._config = config;
 	}
 
-	async init() {
-		await this._getNodeColor();
+	init() {
+		return this._getNodeColor();
 	}
 
 	static rgbToHex(r: number, g: number, b: number): string {
@@ -31,7 +32,6 @@ class Template {
 	}
 
 	async _getColorsId(): Promise<string[]> {
-		/** Get all colors node-id */
 		let colors_id: string[];
 
 		// Get styles from api
@@ -50,8 +50,26 @@ class Template {
 
 	async _getNodeColor() {
 		const colors_id = await this._getColorsId();
-		this._nodes = this._api.getNodesColor(colors_id);
+		this._nodes = await this._api.getNodesColor(colors_id);
+	}
+
+	async _generateFile(container: any, formated: string) {
+		// No colors
+		if (!Object.keys(container).length) {
+			console.error(
+				`No colors selected ! The colors.ts file has not been created.\n`
+			);
+			return;
+		}
+
+		// Create colors file
+		await fs.promises.writeFile(
+			`${this._config.color.outDir}/colors.ts`,
+			formated
+		);
+
+		console.log("colors.ts created successfully !\n");
 	}
 }
 
-export default Template;
+export default ColorTemplate;
