@@ -1,7 +1,7 @@
 import * as nconf from "nconf";
 import path = require("path");
 import * as fs from "fs";
-import { ColorTemplateEnum } from "../colors/Template";
+import { ColorTemplateEnum } from "../colors/ColorTemplate";
 
 class ColorConfig {
 	disable: boolean;

@@ -1,9 +1,16 @@
 {
     "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
     "color": {
-        "disable": false,
+        "disable": true,
         "outDir": "./src/components/constants",
         "template": "palette",
         "base": ""
+    },
+    "icon": {
+        "disable": false,
+        "outDir": "./src/components/all/icons",
+        "template": "react",
+        "container": "Icons",
+        "page": "📚 Components"
     }
 }

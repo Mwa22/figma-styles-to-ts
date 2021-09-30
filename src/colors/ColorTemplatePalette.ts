@@ -1,5 +1,5 @@
 import { Node } from "../types/ast";
-import ColorTemplate from "./Template";
+import ColorTemplate from "./ColorTemplate";
 import Config from "../config/Config";
 
 interface Color {
@@ -85,7 +85,7 @@ class ColorTemplatePalette extends ColorTemplate {
 		};
 	}
 
-	_formatContainerToCode(container: any): string {
+	_formatToCode(container: any): string {
 		return `export type Color = string;
 
 export interface ColorPalette {
@@ -168,7 +168,7 @@ export default COLORS;
 			}
 		});
 
-		await this._generateFile(colors, this._formatContainerToCode(colors));
+		await this._generateFile(colors, this._formatToCode(colors));
 	}
 }
 

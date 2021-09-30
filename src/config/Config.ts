@@ -1,11 +1,13 @@
 import * as nconf from "nconf";
 import * as fs from "fs";
 import ColorConfig from "./ColorConfig";
+import IconConfig from "./IconConfig";
 
 class Config {
 	personalToken: string;
 	fileKey: string;
 	color: ColorConfig;
+	icon: IconConfig;
 
 	constructor() {
 		nconf.argv().file("./figma.config.json");
@@ -13,6 +15,7 @@ class Config {
 		this._getPersonalToken();
 		this._getFileKey();
 		this.color = new ColorConfig();
+		this.icon = new IconConfig();
 	}
 
 	async _getPersonalToken() {

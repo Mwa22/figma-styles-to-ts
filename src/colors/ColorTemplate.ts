@@ -18,7 +18,7 @@ class ColorTemplate {
 	}
 
 	init() {
-		return this._getNodeColor();
+		return this._getColorNodes();
 	}
 
 	static rgbToHex(r: number, g: number, b: number): string {
@@ -31,26 +31,24 @@ class ColorTemplate {
 		return color;
 	}
 
-	async _getColorsId(): Promise<string[]> {
-		let colors_id: string[];
-
+	async _getColorIds(): Promise<string[]> {
 		// Get styles from api
 		const styles = await this._api.getStylesByFileKey();
 
 		// Get all node ids
-		colors_id = styles
+		const color_ids: string[] = styles
 			.filter((style) => style.style_type === "FILL")
 			.map((style) => style.node_id);
 
-		if (!colors_id || !colors_id.length) {
-			throw new Error("Couldn't get any colors from api.");
+		if (!color_ids || !color_ids.length) {
+			throw new Error("Couldn't get any colors from api.\n");
 		}
-		return colors_id;
+		return color_ids;
 	}
 
-	async _getNodeColor() {
-		const colors_id = await this._getColorsId();
-		this._nodes = await this._api.getNodesColor(colors_id);
+	async _getColorNodes() {
+		const color_ids = await this._getColorIds();
+		this._nodes = await this._api.getNodes(color_ids);
 	}
 
 	async _generateFile(container: any, formated: string) {
