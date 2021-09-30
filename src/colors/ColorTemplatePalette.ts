@@ -74,7 +74,7 @@ class ColorTemplatePalette extends ColorTemplate {
 			!Object.values(ColorPaletteEnum).includes(parseInt(names[1]))
 		) {
 			throw new Error(
-				`The color "${doc.name}" has not a correct format. (see palette format)\n`
+				`The color "${doc.name}" has not a correct format. (see palette format)`
 			);
 		}
 
@@ -162,7 +162,7 @@ export default COLORS;
 				.findIndex((type) => !types.includes(type));
 			if (missingEl !== -1) {
 				console.error(
-					`The color '${name}' has missing types. (see template palette)\n`
+					`The color '${name}' has missing types. (see template palette)`
 				);
 				delete colors[name];
 			}

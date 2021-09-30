@@ -65,12 +65,42 @@ export default ${name};
 			result
 		);
 
-		console.log("index.tsx file generated successfully !\n");
+		console.log("\nindex.tsx file generated successfully !");
+	}
+
+	async _generateStorybookFile() {
+		let result = `import { Meta } from "@storybook/react";
+import * as Icons from "./index";
+        
+//👇 This default export determines where your story goes in the story list
+export default {
+    title: "All/Icons",
+    component: Icons.${this._icons[0].name.trim()},
+} as Meta;
+
+//👇 We create a “template” of how args map to rendering
+${this._icons
+	.map(
+		(icon) =>
+			`export const ${icon.name.trim()} = () => <Icons.${icon.name.trim()} height={50} width={50} />;`
+	)
+	.join("\n")}
+`;
+
+		await fs.promises.writeFile(
+			`${this._config.icon.outDir}/index.stories.tsx`,
+			result
+		);
+
+		console.log("index.stories.tsx file generated successfully !\n");
 	}
 
 	async generate() {
 		await this._generateFiles(this._formatToCode);
 		await this._generateIndexFile();
+		if (this._config.icon.storybook) {
+			await this._generateStorybookFile();
+		}
 	}
 }
 

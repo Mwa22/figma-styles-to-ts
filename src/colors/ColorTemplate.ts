@@ -66,7 +66,7 @@ class ColorTemplate {
 			formated
 		);
 
-		console.log("colors.ts created successfully !\n");
+		console.log("\ncolors.ts created successfully !\n");
 	}
 }
 

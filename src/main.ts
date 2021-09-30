@@ -12,6 +12,7 @@ async function main() {
 	const config = new Config();
 
 	if (!config.color.disable) {
+		console.log("--- COLORS ---\n");
 		const template =
 			config.color.template === ColorTemplateEnum.default
 				? new ColorTemplateDefault(config)
@@ -24,9 +25,12 @@ async function main() {
 			console.error(err.message);
 			process.exit(1);
 		}
+
+		console.log("-------------\n");
 	}
 
 	if (!config.icon.disable) {
+		console.log("--- ICONS ---\n");
 		const template =
 			config.icon.template === IconTemplateEnum.default
 				? new IconTemplateDefault(config)
@@ -39,6 +43,8 @@ async function main() {
 			console.error(err.message);
 			process.exit(1);
 		}
+
+		console.log("-------------\n");
 	}
 }
 

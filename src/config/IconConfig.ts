@@ -8,6 +8,7 @@ class IconConfig {
 	outDir: string;
 	page: string;
 	template: IconTemplateEnum;
+	storybook: boolean;
 	container: string;
 
 	constructor() {
@@ -15,8 +16,9 @@ class IconConfig {
 		if (!this.disable) {
 			this._getOutDir();
 			this._getPage();
-			this._getTemplate();
 			this._getContainer();
+			this._getTemplate();
+			this._getStorybook();
 		}
 	}
 
@@ -96,6 +98,17 @@ class IconConfig {
 		if (typeof this.container !== "string") {
 			console.error(
 				`Wrong figma config entry: 'icon': { container: ${this.container} }. You must enter a string.`
+			);
+			process.exit(1);
+		}
+	}
+
+	_getStorybook() {
+		this.storybook = nconf.get("icon:storybook") ?? false;
+
+		if (typeof this.storybook !== "boolean") {
+			console.error(
+				`Wrong figma config entry: 'icon': { 'storybook': ${this.storybook} }. You must choose one of these values: [true, false].\n`
 			);
 			process.exit(1);
 		}
