@@ -28,41 +28,133 @@ npm install -D figma-styles-to-ts
 
 Create a figma.config.json file at the root of your project.
 
-```sh
+```json
 {
-    "fileKey": "your_file_key",
-    "color": {
-        "disable": false,
-        "outDir": "color_out_dir",
-        "template": "default",
-        "base": ""
-    },
-    "icon": {
-        "disable": false,
-        "outDir": "icon_out_dir",
-        "template": "default",
-        "storybook": false,
-        "page": "📚 Components",
-        "container": "Icons"
-    }
+	"fileKey": "your_file_key",
+	"color": {
+		"disable": false,
+		"outDir": "color_out_dir",
+		"template": "default",
+		"base": ""
+	},
+	"icon": {
+		"disable": false,
+		"outDir": "icon_out_dir",
+		"template": "default",
+		"storybook": false,
+		"page": "📚 Components",
+		"container": "Icons"
+	}
 }
 ```
 
-| Config              | Summary                                                                                                                                      |
-| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fileKey`           | The file key of your figma file. ex: https://www.figma.com/file/<file_key_here>/Name?node-id=11:09                                           |
-| `color -> disable`  | Disable Color generator (true or false)                                                                                                      |
-| `color -> outDir`   | The directory to store the code generated (a colors.ts file will be generated in this folder)                                                |
-| `color -> template` | Use default template or palette template (see [Templates](#templates)) ('default' or 'palette')                                              |
-| `color -> base`     | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName |
-| `icon -> disable`   | Disable Icon generator (true or false)                                                                                                       |
-| `icon -> outDir`    | The directory to store the code generated.                                                                                                   |
-| `icon -> template`  | Use default template or react template (see [Templates](#templates)) ('default' or 'react')                                                  |
-| `icon -> storybook` | Generate a index.stories.tsx file (only with react template)                                                                                 |
-| `icon -> page`      | The page name of your icons                                                                                                                  |
-| `icon -> container` | The container name in the page of your icons (/!\ all your icons must have a unique name and must be a component)                            |
+### Required
 
-## <a name="templates"></a>Templates
+| Config    | Summary                                                                                            |
+| :-------- | :------------------------------------------------------------------------------------------------- |
+| `fileKey` | The file key of your figma file. ex: https://www.figma.com/file/<file_key_here>/Name?node-id=11:09 |
+
+### Color
+
+⚠️ To generate Colors, you need to publish your styles in figma ⚠️
+
+| Config     | Summary                                                                                                                                      |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `disable`  | Disable Color generator (true or false)                                                                                                      |
+| `outDir`   | The directory to store the code generated (a colors.ts file will be generated in this folder)                                                |
+| `template` | Use default template or palette template (see [Templates](#color_templates)) ('default' or 'palette')                                        |
+| `base`     | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName |
+
+#### <a name="color_templates"></a>Templates
+
+The `default` template will generate a COLORS constant with all colors recursively.
+Example:
+
+```ts
+const COLORS = {
+  CompanyName: {
+    Black: {
+      dark: { value: "#000000" }
+      light: { value: "#131231" }
+    },
+    White: {
+      value: "#FFFFFF"
+    }
+  },
+  CustomColor: {
+    value: "#452398"
+  }
+}
+```
+
+The `palette` template will generate a COLORS constant with colors that matches the palette format.
+You must name your colors as Color/100, Color/200, ..., Color/700 (only colors from 100 to 700 will be generated).
+Example:
+
+```ts
+const COLORS = {
+	Black: {
+		T100: "#000001",
+		T200: "#000002",
+		T300: "#000003",
+		T400: "#000004",
+		T500: "#000005",
+		T600: "#000006",
+		T700: "#000007",
+	},
+};
+```
+
+### Icon
+
+| Config                                                             | Summary                                                                                          |
+| :----------------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| `disable`                                                          | Disable Icon generator (true or false)                                                           |
+| `outDir`                                                           | The directory to store the code generated.                                                       |
+| `template`                                                         | Use default template or react template (see [Templates](#icon_templates)) ('default' or 'react') |
+| `storybook`                                                        | Generate a index.stories.tsx file (only with react template)                                     |
+| `page`                                                             | The page name of your icons                                                                      |
+| `container`                                                        | The container name in the page of your icons (                                                   |
+| ⚠️ all your icons must have a unique name and must be a component) |
+
+#### <a name="icon_templates"></a>Templates
+
+The `default` template will generate svg files.
+Example:
+
+```svg
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11 1L1 11M1 1L11 11" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+```
+
+The `react` template will generate tsx files with React Component.
+Example:
+
+```tsx
+const Cross = (props: React.SVGProps<SVGSVGElement>) => {
+	return (
+		<svg
+			viewBox="0 0 12 12"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			width={props.width}
+			height={props.height}
+		>
+			<path
+				d="M11.2174 0.782609L0.782609 11.2174M0.782609 0.782609L11.2174 11.2174"
+				stroke={props.fill}
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};
+export default Cross;
+
+Use: <Cross height={20} width={20} fill="#000000" />;
+```
 
 ## Usage
 
