@@ -59,14 +59,11 @@ export default ${name};
 
 	async _generateIndexFile() {
 		let result = this._icons
-			.map(
-				(icon) =>
-					`import ${icon.name.trim()} from "./${icon.name.trim()}";`
-			)
+			.map((icon) => `import ${icon.name} from "./${icon.name}";`)
 			.join("\n");
 
 		result += `\n\nexport { ${this._icons
-			.map((icon) => `${icon.name.trim()}`)
+			.map((icon) => `${icon.name}`)
 			.join(", ")} };`;
 
 		await fs.promises.writeFile(
@@ -84,14 +81,14 @@ import * as Icons from "./index";
 //👇 This default export determines where your story goes in the story list
 export default {
     title: "All/Icons",
-    component: Icons.${this._icons[0].name.trim()},
+    component: Icons.${this._icons[0].name},
 } as Meta;
 
 //👇 We create a “template” of how args map to rendering
 ${this._icons
 	.map(
 		(icon) =>
-			`export const ${icon.name.trim()} = () => <Icons.${icon.name.trim()} height={50} width={50} fill="black" />;`
+			`export const ${icon.name} = () => <Icons.${icon.name} height={50} width={50} fill="black" />;`
 	)
 	.join("\n")}
 `;

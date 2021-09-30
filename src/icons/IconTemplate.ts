@@ -39,10 +39,28 @@ class IconTemplate {
 		return color;
 	}
 
+	_normalizeIconName(name: string): string {
+		name = name.trim();
+		if (/(-|\/)/.test(name)) {
+			name = name.toLocaleLowerCase();
+			name = name
+				.split(/(-|\/)/g)
+				.map((word) =>
+					/(-|\/)/.test(word)
+						? ""
+						: word[0].toUpperCase() + word.slice(1, word.length)
+				)
+				.join("");
+		} else {
+			name = name[0].toUpperCase() + name.slice(1, name.length);
+		}
+		return name;
+	}
+
 	_searchRecursively(ids: any, container: any) {
 		container?.children?.forEach((node: Node) => {
 			if (node.type === "COMPONENT") {
-				ids[node.id] = node.name;
+				ids[node.id] = this._normalizeIconName(node.name);
 			} else {
 				this._searchRecursively(ids, node);
 			}
@@ -113,14 +131,13 @@ class IconTemplate {
 					this._config.icon.template === IconTemplateEnum.default
 						? "svg"
 						: "tsx";
-				const iconName = icon.name.trim();
 
 				await fs.promises.writeFile(
-					`${this._config.icon.outDir}/${iconName}.${fileExt}`,
-					format(iconName, icon.svg)
+					`${this._config.icon.outDir}/${icon.name}.${fileExt}`,
+					format(icon.name, icon.svg)
 				);
 
-				console.log(`${iconName}.${fileExt} created successfully !`);
+				console.log(`${icon.name}.${fileExt} created successfully !`);
 			} catch (err) {
 				console.error(err.message);
 				return;
