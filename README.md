@@ -24,6 +24,26 @@
 npm install -D figma-styles-to-ts
 ```
 
+## Usage
+
+First of all, you need to give your `personal figma token` (you can do this once, the token will be registered). It will save your personal token in /node_modules and generate the styles.
+
+```sh
+figma-styles-to-ts --token="your_token"
+```
+
+Next time you just have to use this:
+
+```sh
+figma-styles-to-ts
+```
+
+To reset your token:
+
+```sh
+figma-styles-reset && figma-styles-to-ts --token="your_new_token"
+```
+
 ## Configuration
 
 Create a figma.config.json file at the root of your project.
@@ -56,14 +76,14 @@ Create a figma.config.json file at the root of your project.
 
 ### Color
 
-⚠️ To generate Colors, you need to publish your styles in figma ⚠️
+⚠️ To generate Colors, you need to publish your styles in figma. ⚠️
 
-| Config     | Summary                                                                                                                                      |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
-| `disable`  | Disable Color generator (true or false)                                                                                                      |
-| `outDir`   | The directory to store the code generated (a colors.ts file will be generated in this folder)                                                |
-| `template` | Use default template or palette template (see [Templates](#color_templates)) ('default' or 'palette')                                        |
-| `base`     | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName |
+| Config     | Summary                                                                                                                                       |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `disable`  | Disable Color generator (`true` or `false`).                                                                                                  |
+| `outDir`   | The directory to store the code generated (a colors.ts file will be generated in this folder).                                                |
+| `template` | Use default `template` or `palette` template (see [Templates](#color_templates)) (`'default'` or `'palette'`).                                |
+| `base`     | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName. |
 
 #### <a name="color_templates"></a>Templates
 
@@ -107,15 +127,14 @@ const COLORS = {
 
 ### Icon
 
-| Config                                                             | Summary                                                                                          |
-| :----------------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| `disable`                                                          | Disable Icon generator (true or false)                                                           |
-| `outDir`                                                           | The directory to store the code generated.                                                       |
-| `template`                                                         | Use default template or react template (see [Templates](#icon_templates)) ('default' or 'react') |
-| `storybook`                                                        | Generate a index.stories.tsx file (only with react template)                                     |
-| `page`                                                             | The page name of your icons                                                                      |
-| `container`                                                        | The container name in the page of your icons (                                                   |
-| ⚠️ all your icons must have a unique name and must be a component) |
+| Config      | Summary                                                                                                           |
+| :---------- | :---------------------------------------------------------------------------------------------------------------- |
+| `disable`   | Disable Icon generator (`true` or `false`).                                                                       |
+| `outDir`    | The directory to store the code generated.                                                                        |
+| `template`  | Use `default` template or `react` template (see [Templates](#icon_templates)) (`'default'` or `'react'`).         |
+| `storybook` | Generate a index.stories.tsx file (⚠️ only with react template).                                                  |
+| `page`      | The page name of your icons.                                                                                      |
+| `container` | The container name in the page of your icons (⚠️ all your icons must have a unique name and must be a component). |
 
 #### <a name="icon_templates"></a>Templates
 
@@ -154,26 +173,6 @@ const Cross = (props: React.SVGProps<SVGSVGElement>) => {
 export default Cross;
 
 Use: <Cross height={20} width={20} fill="#000000" />;
-```
-
-## Usage
-
-First of all, you need to give your personal figma token (you can do this once, the token will be registered). It will save your personal token in / node_modules and generate the styles.
-
-```sh
-figma-styles-to-ts --token="your_token"
-```
-
-Next time you just have to use this:
-
-```sh
-figma-styles-to-ts
-```
-
-To reset your token:
-
-```sh
-figma-styles-reset && figma-styles-to-ts --token="your_new_token"
 ```
 
 ## Author
