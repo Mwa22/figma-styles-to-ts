@@ -14,15 +14,24 @@ class IconTemplateReact extends IconTemplate {
 	_formatToCode(name: string, svg: string): string {
 		// format <svg>
 		const svgRow = svg.split("\n");
+
+		// remove default width and height
 		svgRow[0] = svgRow[0].replace(
-			/(fill|width|height)=("|')([^("|')])+("|') /g,
+			/(width|height)=("|')([^("|')])+("|') /g,
 			""
 		);
-		svgRow[0] = svgRow[0].replace(">", " {...props}>");
+		// add new width and height
+		svgRow[0] = svgRow[0].replace(
+			">",
+			" width={props.width} height={props.height}>"
+		);
 		svg = svgRow.join("\n");
 
 		// format svg body
-		svg = svg.replace(/fill=("|')([^("|')])+("|')/g, "fill={props.fill}");
+		svg = svg.replace(
+			/fill=("|')((?!(none|('|"))).)*("|')/g,
+			"fill={props.fill}"
+		);
 		svg = svg.replace(
 			/stroke=("|')([^("|')])+("|')/g,
 			"stroke={props.fill}"
@@ -82,7 +91,7 @@ export default {
 ${this._icons
 	.map(
 		(icon) =>
-			`export const ${icon.name.trim()} = () => <Icons.${icon.name.trim()} height={50} width={50} />;`
+			`export const ${icon.name.trim()} = () => <Icons.${icon.name.trim()} height={50} width={50} fill="black" />;`
 	)
 	.join("\n")}
 `;
