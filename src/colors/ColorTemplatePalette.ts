@@ -95,7 +95,7 @@ ${Object.values(ColorPaletteEnum)
 	.map((type) => `\tT${type}: Color;`)
 	.join("\n")}
 }
-        
+
 export interface Colors {
 ${Object.entries(container)
 	.map(([name, color]) => {
@@ -123,9 +123,8 @@ ${Object.entries(color)
 	})
 	.join("\n")}
 };
-        
-export default COLORS;
-        `;
+
+export default COLORS;`;
 	}
 
 	async generate() {

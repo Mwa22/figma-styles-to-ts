@@ -79,9 +79,8 @@ class ColorTemplateDefault extends ColorTemplate {
 export interface Colors ${colors_interface}
 
 const COLORS: Colors = ${colors}
-        
-export default COLORS;
-        `;
+
+export default COLORS;`;
 	}
 
 	async generate() {

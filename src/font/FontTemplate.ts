@@ -3,19 +3,25 @@ import Config from "../config/Config";
 import { Node } from "../types/ast";
 import * as fs from "fs";
 
-interface IFont {
+interface Font {
 	name: string;
 	fontFamily: string;
 	fontWeight: number;
 	fontSize: number;
 	letterSpacing: number;
-	lineHeight: number;
+	lineHeight: string;
 }
 
-class Font {
+export enum FontTemplateEnum {
+	default = "default",
+	react = "react",
+	chakra = "chakra",
+}
+
+class FontTemplate {
 	_config: Config;
 	_api: FigmaAPI;
-	_nodes: any;
+	_fonts: any;
 
 	constructor(config: Config, api: FigmaAPI) {
 		this._api = api;
@@ -23,7 +29,7 @@ class Font {
 	}
 
 	init() {
-		return this._getFontNodes();
+		return this._getFonts();
 	}
 
 	async _getFontIds(): Promise<string[]> {
@@ -43,10 +49,41 @@ class Font {
 
 	async _getFontNodes() {
 		const ids = await this._getFontIds();
-		this._nodes = await this._api.getNodes(ids);
+		return await this._api.getNodes(ids);
 	}
 
-	_getFontFromNode(node: any): IFont | undefined {
+	async _getFonts() {
+		// Container
+		const fonts = {};
+
+		// Add fonts to container
+		Object.values(await this._getFontNodes()).forEach((node) => {
+			try {
+				const font = this._getFontFromNode(node);
+				if (!font) return;
+
+				const fontValue = {
+					fontFamily: font.fontFamily,
+					fontWeight: font.fontWeight,
+					fontSize: font.fontSize,
+					letterSpacing: font.letterSpacing,
+					lineHeight: font.lineHeight,
+				};
+
+				const names = font.name
+					.split("/")
+					.map((n) => (isNaN(parseInt(n)) ? n : `T${n}`));
+				this._setFontRecursively(fonts, names, fontValue);
+			} catch (err) {
+				console.error(err.message);
+				return;
+			}
+		});
+
+		this._fonts = fonts;
+	}
+
+	_getFontFromNode(node: any): Font | undefined {
 		const doc: Node<"TEXT"> = node.document as any;
 
 		// Test correct font type
@@ -54,13 +91,15 @@ class Font {
 			throw new Error(`The font "${doc.name}" could not be retrieved\n`);
 		}
 
-		const font: IFont = {
+		const font: Font = {
 			name: doc.name,
 			fontFamily: doc?.style?.fontFamily,
 			fontSize: doc?.style?.fontSize,
 			fontWeight: doc?.style?.fontWeight,
 			letterSpacing: doc?.style?.letterSpacing,
-			lineHeight: doc?.style?.lineHeightPx,
+			lineHeight: doc?.style?.lineHeightPx
+				? `${doc?.style?.lineHeightPx}px`
+				: undefined,
 		};
 
 		//Test name format
@@ -98,24 +137,6 @@ class Font {
 		console.log("fonts.ts created successfully !\n");
 	}
 
-	async _generateReactFile(container: any, formated: string) {
-		// No fonts
-		if (!Object.keys(container).length) {
-			console.error(
-				`No fonts selected ! The Text.tsx file has not been created.\n`
-			);
-			return;
-		}
-
-		// Create fonts file
-		await fs.promises.writeFile(
-			`${this._config.font.outDir}/Text.tsx`,
-			formated
-		);
-
-		console.log("Text.tsx created successfully !\n");
-	}
-
 	_setFontRecursively(container: any, values: string[], font: any) {
 		if (values?.length === 1) {
 			if (container[values[0]]) {
@@ -146,85 +167,23 @@ class Font {
     fontWeight: number;
     fontSize: number;
     letterSpacing: number;
-    lineHeight: number;
+    lineHeight: string;
 }
 
 export interface Fonts ${fonts_interface}
 
 const FONTS: Fonts = ${fonts}
-        
-export default FONTS;
-`;
+
+export default FONTS;`;
 	}
 
-	_formatCodeReact(): string {
-		return `import { Font } from "./fonts";
-
-export interface TextProps extends React.HTMLProps<HTMLParagraphElement> {
-	font?: Font;
-	color?: string;
-	children?: React.ReactNode | React.ReactNode[] | string | number;
-}
-		
-const Text = ({ children, font, color, ...rest }: TextProps) => {
-	return (
-		<p
-			style={{
-				color: color,
-				fontSize: font?.fontSize,
-				fontFamily: font?.fontFamily,
-				fontWeight: font?.fontWeight,
-				lineHeight: font?.lineHeight,
-				letterSpacing: font?.letterSpacing,
-			}}
-			{...rest}
-		>
-		{children}
-		</p>
-	);
-};
-		
-export default Text;
-`;
-	}
-
-	async generate() {
-		if (!this._nodes) {
+	async _generate() {
+		if (!this._fonts) {
 			throw new Error("No fonts fetched from api.\n");
 		}
 
-		// Container
-		const fonts = {};
-
-		// Add fonts to container
-		Object.values(this._nodes).forEach((node) => {
-			try {
-				const font = this._getFontFromNode(node);
-				if (!font) return;
-
-				const fontValue = {
-					fontFamily: font.fontFamily,
-					fontWeight: font.fontWeight,
-					fontSize: font.fontSize,
-					letterSpacing: font.letterSpacing,
-					lineHeight: font.lineHeight,
-				};
-
-				const names = font.name
-					.split("/")
-					.map((n) => (isNaN(parseInt(n)) ? n : `T${n}`));
-				this._setFontRecursively(fonts, names, fontValue);
-			} catch (err) {
-				console.error(err.message);
-				return;
-			}
-		});
-
-		await this._generateFile(fonts, this._formatToCode(fonts));
-		if (this._config.font.react) {
-			await this._generateReactFile(fonts, this._formatCodeReact());
-		}
+		await this._generateFile(this._fonts, this._formatToCode(this._fonts));
 	}
 }
 
-export default Font;
+export default FontTemplate;

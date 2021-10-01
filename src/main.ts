@@ -4,7 +4,10 @@ import { ColorTemplateEnum } from "./colors/ColorTemplate";
 import ColorTemplateDefault from "./colors/ColorTemplateDefault";
 import ColorTemplatePalette from "./colors/ColorTemplatePalette";
 import Config from "./config/Config";
-import Font from "./font/Font";
+import { FontTemplateEnum } from "./font/FontTemplate";
+import FontTemplateChakra from "./font/FontTemplateChakra";
+import FontTemplateDefault from "./font/FontTemplateDefault";
+import FontTemplateReact from "./font/FontTemplateReact";
 import { IconTemplateEnum } from "./icons/IconTemplate";
 import IconTemplateDefault from "./icons/IconTemplateDefault";
 import IconTemplateReact from "./icons/IconTemplateReact";
@@ -33,11 +36,25 @@ async function main() {
 
 	if (!config.font.disable) {
 		console.log("--- FONTS ---\n");
-		const fonts = new Font(config, api);
+		let template;
+		switch (config.font.template) {
+			case FontTemplateEnum.default: {
+				template = new FontTemplateDefault(config, api);
+				break;
+			}
+			case FontTemplateEnum.react: {
+				template = new FontTemplateReact(config, api);
+				break;
+			}
+			case FontTemplateEnum.chakra: {
+				template = new FontTemplateChakra(config, api);
+				break;
+			}
+		}
 
 		try {
-			await fonts.init();
-			await fonts.generate();
+			await template.init();
+			await template.generate();
 		} catch (err) {
 			console.error(err.message);
 		}

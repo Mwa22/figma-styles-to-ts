@@ -1,18 +1,19 @@
 import * as nconf from "nconf";
 import path = require("path");
 import * as fs from "fs";
+import { FontTemplateEnum } from "../font/FontTemplate";
 
 class FontConfig {
 	disable: boolean;
 	outDir: string;
-	react: boolean;
+	template: FontTemplateEnum;
 	base: string;
 
 	constructor() {
 		this._getDisable();
 		if (!this.disable) {
 			this._getOutDir();
-			this._getReact();
+			this._getTemplate();
 			this._getBase();
 		}
 	}
@@ -59,12 +60,18 @@ class FontConfig {
 		}
 	}
 
-	_getReact() {
-		this.react = nconf.get("font:react") ?? false;
+	_getTemplate() {
+		this.template = nconf.get("font:template") ?? FontTemplateEnum.default;
 
-		if (typeof this.react !== "boolean") {
+		if (!Object.values(FontTemplateEnum).includes(this.template)) {
 			console.error(
-				`Wrong figma config entry: 'font': { 'react': ${this.react} }. You must choose one of these values: [true, false].\n`
+				`Wrong figma config entry: 'font': { 'template': ${
+					this.template
+				} }. You must choose one of these values: [${Object.values(
+					FontTemplateEnum
+				)
+					.map((v) => `"${v}"`)
+					.join(", ")}].\n`
 			);
 			process.exit(1);
 		}

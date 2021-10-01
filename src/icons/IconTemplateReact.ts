@@ -54,8 +54,8 @@ ${svg
 	.join("\n")}
     );
 }
-export default ${name};
-        `;
+
+export default ${name};`;
 	}
 
 	async _generateIndexFile() {
