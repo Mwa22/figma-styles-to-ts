@@ -1,13 +1,19 @@
 {
     "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
     "color": {
-        "disable": false,
+        "disable": true,
         "outDir": "./src/constants",
         "template": "palette",
         "base": ""
     },
-    "icon": {
+    "font": {
         "disable": false,
+        "outDir": "./src/constants",
+        "react": true,
+        "base": ""
+    },
+    "icon": {
+        "disable": true,
         "outDir": "./src/components/all/icons",
         "template": "react",
         "storybook": true,

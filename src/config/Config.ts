@@ -2,11 +2,13 @@ import * as nconf from "nconf";
 import * as fs from "fs";
 import ColorConfig from "./ColorConfig";
 import IconConfig from "./IconConfig";
+import FontConfig from "./FontConfig";
 
 class Config {
 	personalToken: string;
 	fileKey: string;
 	color: ColorConfig;
+	font: FontConfig;
 	icon: IconConfig;
 
 	constructor() {
@@ -15,6 +17,7 @@ class Config {
 		this._getPersonalToken();
 		this._getFileKey();
 		this.color = new ColorConfig();
+		this.font = new FontConfig();
 		this.icon = new IconConfig();
 	}
 

@@ -1,6 +1,7 @@
 import { Node } from "../types/ast";
 import ColorTemplate from "./ColorTemplate";
 import Config from "../config/Config";
+import FigmaAPI from "../api/FigmaAPI";
 
 interface Color {
 	name: string;
@@ -8,8 +9,8 @@ interface Color {
 }
 
 class ColorTemplateDefault extends ColorTemplate {
-	constructor(config: Config) {
-		super(config);
+	constructor(config: Config, api: FigmaAPI) {
+		super(config, api);
 	}
 
 	init() {
@@ -67,9 +68,17 @@ class ColorTemplateDefault extends ColorTemplate {
 	}
 
 	_formatToCode(container: any): string {
-		return `export interface Colors ${JSON.stringify(container, null, 4)}
+		const colors = JSON.stringify(container, null, 4).replace(
+			/"([^"])+":/g,
+			(match) => match.slice(1, match.length - 2) + ":"
+		);
+		const colors_interface = colors.replace(/: "([^"])+"/g, ": Color");
 
-const COLORS: Colors = ${JSON.stringify(container, null, 4)}
+		return `export type Color = string;
+
+export interface Colors ${colors_interface}
+
+const COLORS: Colors = ${colors}
         
 export default COLORS;
         `;
@@ -77,7 +86,7 @@ export default COLORS;
 
 	async generate() {
 		if (!this._nodes) {
-			throw new Error("No color fetched from api.\n");
+			throw new Error("No colors fetched from api.\n");
 		}
 
 		// Container

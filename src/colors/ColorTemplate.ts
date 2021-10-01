@@ -12,8 +12,8 @@ class ColorTemplate {
 	_api: FigmaAPI;
 	_nodes: any;
 
-	constructor(config: Config) {
-		this._api = new FigmaAPI(config);
+	constructor(config: Config, api: FigmaAPI) {
+		this._api = api;
 		this._config = config;
 	}
 

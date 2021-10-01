@@ -20,23 +20,13 @@ class IconTemplate {
 	_nodes: any;
 	_icons: Icon[];
 
-	constructor(config: Config) {
-		this._api = new FigmaAPI(config);
+	constructor(config: Config, api: FigmaAPI) {
+		this._api = api;
 		this._config = config;
 	}
 
 	init() {
 		return this._getIconImages();
-	}
-
-	static rgbToHex(r: number, g: number, b: number): string {
-		const color =
-			"#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-
-		if (color.length > 7) {
-			return color.slice(0, 7);
-		}
-		return color;
 	}
 
 	_normalizeIconName(name: string): string {

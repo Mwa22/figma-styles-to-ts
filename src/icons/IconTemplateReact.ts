@@ -1,10 +1,11 @@
 import Config from "../config/Config";
 import IconTemplate from "./IconTemplate";
 import * as fs from "fs";
+import FigmaAPI from "../api/FigmaAPI";
 
 class IconTemplateReact extends IconTemplate {
-	constructor(config: Config) {
-		super(config);
+	constructor(config: Config, api: FigmaAPI) {
+		super(config, api);
 	}
 
 	init() {

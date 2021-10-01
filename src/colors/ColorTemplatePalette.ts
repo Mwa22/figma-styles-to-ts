@@ -1,6 +1,7 @@
 import { Node } from "../types/ast";
 import ColorTemplate from "./ColorTemplate";
 import Config from "../config/Config";
+import FigmaAPI from "../api/FigmaAPI";
 
 interface Color {
 	hex: string;
@@ -22,8 +23,8 @@ enum ColorPaletteEnum {
 }
 
 class ColorTemplatePalette extends ColorTemplate {
-	constructor(config: Config) {
-		super(config);
+	constructor(config: Config, api: FigmaAPI) {
+		super(config, api);
 	}
 
 	init() {
@@ -129,7 +130,7 @@ export default COLORS;
 
 	async generate() {
 		if (!this._nodes) {
-			throw new Error("No color fetched from api.");
+			throw new Error("No colors fetched from api.");
 		}
 
 		// Container

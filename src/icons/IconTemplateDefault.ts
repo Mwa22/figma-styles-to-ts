@@ -1,9 +1,10 @@
+import FigmaAPI from "../api/FigmaAPI";
 import Config from "../config/Config";
 import IconTemplate from "./IconTemplate";
 
 class IconTemplateDefault extends IconTemplate {
-	constructor(config: Config) {
-		super(config);
+	constructor(config: Config, api: FigmaAPI) {
+		super(config, api);
 	}
 
 	init() {
