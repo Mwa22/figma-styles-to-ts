@@ -14,7 +14,7 @@
   </a>
 </p>
 
-> Generate typescript files from figma styles.
+> Generate styles in typescript files and icon components from figma.
 
 ### 🏠 [Homepage](https://github.com/Mwa22/figma-styles-to-ts#readme)
 
@@ -124,6 +124,17 @@ const COLORS = {
 	},
 };
 ```
+
+### Font
+
+⚠️ To generate Fonts, you need to publish your styles in figma. ⚠️
+
+| Config    | Summary                                                                                                                                  |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `disable` | Disable Font generator (`true` or `false`).                                                                                              |
+| `outDir`  | The directory to store the code generated (a fonts.ts file will be generated in this folder).                                            |
+| `react`   | Generate a Text component with a font property if enabled (`true` or `false`).                                                           |
+| `base`    | Generate all fonts from base path. ex: All my fonts are as CompanyName/P1/Bold. Use base: "CompanyName" to get all fonts of CompanyName. |
 
 ### Icon
 
