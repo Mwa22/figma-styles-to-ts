@@ -29,7 +29,9 @@
     "generate",
     "code-generation",
     "fetch",
-    "data fetching"
+    "data fetching",
+    "icon",
+    "color"
   ],
   "license": "MIT",
   "bugs": {

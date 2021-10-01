@@ -2,7 +2,7 @@
     "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
     "color": {
         "disable": false,
-        "outDir": "./src/components/constants",
+        "outDir": "./src/constants",
         "template": "palette",
         "base": ""
     },

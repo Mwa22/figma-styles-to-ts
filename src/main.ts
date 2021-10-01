@@ -23,7 +23,6 @@ async function main() {
 			await template.generate();
 		} catch (err) {
 			console.error(err.message);
-			process.exit(1);
 		}
 
 		console.log("-------------\n");
@@ -41,7 +40,6 @@ async function main() {
 			await template.generate();
 		} catch (err) {
 			console.error(err.message);
-			process.exit(1);
 		}
 
 		console.log("-------------\n");

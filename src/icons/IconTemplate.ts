@@ -41,12 +41,13 @@ class IconTemplate {
 
 	_normalizeIconName(name: string): string {
 		name = name.trim();
-		if (/(-|\/)/.test(name)) {
+		const regex = /(-|\/|\s)/g;
+		if (regex.test(name)) {
 			name = name.toLocaleLowerCase();
 			name = name
-				.split(/(-|\/)/g)
+				.split(regex)
 				.map((word) =>
-					/(-|\/)/.test(word)
+					regex.test(word)
 						? ""
 						: word[0].toUpperCase() + word.slice(1, word.length)
 				)
