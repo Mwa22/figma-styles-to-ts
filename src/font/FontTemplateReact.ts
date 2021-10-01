@@ -52,7 +52,7 @@ const Text = ({ children, font, color, ...rest }: TextProps) => {
 			}}
 			{...rest}
 		>
-		{children}
+	        {children}
 		</p>
 	);
 };

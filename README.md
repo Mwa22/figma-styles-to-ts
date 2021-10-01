@@ -135,12 +135,84 @@ const COLORS = {
 
 ⚠️ To generate Fonts, you need to publish your styles in figma. ⚠️
 
-| Config    | Summary                                                                                                                                  |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `disable` | Disable Font generator (`true` or `false`).                                                                                              |
-| `outDir`  | The directory to store the code generated (a fonts.ts file will be generated in this folder).                                            |
-| `react`   | Generate a Text component with a font property if enabled (`true` or `false`).                                                           |
-| `base`    | Generate all fonts from base path. ex: All my fonts are as CompanyName/P1/Bold. Use base: "CompanyName" to get all fonts of CompanyName. |
+| Config     | Summary                                                                                                                                  |
+| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `disable`  | Disable Font generator (`true` or `false`).                                                                                              |
+| `outDir`   | The directory to store the code generated (a fonts.ts file will be generated in this folder).                                            |
+| `template` | Use `default`, `react` or `chakra` template (see [Templates](#font_templates)) (`'default'`, `'reat'` or `'chakra'`).                    |
+| `base`     | Generate all fonts from base path. ex: All my fonts are as CompanyName/P1/Bold. Use base: "CompanyName" to get all fonts of CompanyName. |
+
+#### <a name="font_templates"></a>Templates
+
+The `default` template will generate a FONTS constant with all fonts recursively.
+Example:
+
+```ts
+const FONTS: Fonts = {
+	Bold: {
+		value: {
+			fontFamily: "Ubuntu",
+			fontWeight: 700,
+			fontSize: 12,
+			letterSpacing: 0,
+			lineHeight: "14.0625px",
+		},
+	},
+	Medium: {
+		value: {
+			fontFamily: "Ubuntu",
+			fontWeight: 500,
+			fontSize: 12,
+			letterSpacing: 0,
+			lineHeight: "14.0625px",
+		},
+	},
+};
+```
+
+The `react` template will generate the fonts.ts file from default template and will generate a Text component.
+Example:
+
+```ts
+const Text = ({ children, font, color, ...rest }: TextProps) => {
+	return (
+		<p
+			style={{
+				color: color,
+				fontSize: font?.fontSize,
+				fontFamily: font?.fontFamily,
+				fontWeight: font?.fontWeight,
+				lineHeight: font?.lineHeight,
+				letterSpacing: font?.letterSpacing,
+			}}
+			{...rest}
+		>
+			{children}
+		</p>
+	);
+};
+```
+
+The `chakra` template will generate the fonts.ts file from default template and will generate a Paragraph component.
+Example:
+
+```tsx
+const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
+	return (
+		<Text
+			color={color}
+			fontFamily={font?.fontFamily}
+			fontSize={font?.fontSize}
+			fontWeight={font?.fontWeight}
+			lineHeight={font?.lineHeight}
+			letterSpacing={font?.letterSpacing}
+			{...rest}
+		>
+			{children}
+		</Text>
+	);
+};
+```
 
 ### Icon
 

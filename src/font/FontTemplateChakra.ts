@@ -42,7 +42,13 @@ export interface ParagraphProps extends React.HTMLProps<HTMLParagraphElement> {
 
 const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
 	return (
-		<Text color={color} fontFamily={font?.fontFamily} fontSize={font?.fontSize} fontWeight={font?.fontWeight} lineHeight={font?.lineHeight} letterSpacing={font?.letterSpacing}
+		<Text
+            color={color}
+            fontFamily={font?.fontFamily}
+            fontSize={font?.fontSize}
+            fontWeight={font?.fontWeight}
+            lineHeight={font?.lineHeight}
+            letterSpacing={font?.letterSpacing}
 			{...rest}
 		>
 		{children}

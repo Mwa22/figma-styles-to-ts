@@ -9,7 +9,7 @@
     "font": {
         "disable": false,
         "outDir": "./src/constants",
-        "react": true,
+        "template": "react",
         "base": ""
     },
     "icon": {
