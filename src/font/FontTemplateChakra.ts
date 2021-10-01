@@ -31,10 +31,10 @@ class FontTemplateChakra extends FontTemplate {
 	}
 
 	_formatToCodeChakra(): string {
-		return `import { Text } from "@chakra-ui/layout";
+		return `import { Text, TextProps } from "@chakra-ui/layout";
 import { Font } from "./fonts";
 
-export interface ParagraphProps extends React.HTMLProps<HTMLParagraphElement> {
+export interface ParagraphProps extends TextProps {
 	font?: Font;
 	color?: string;
 	children?: React.ReactNode | React.ReactNode[] | string | number;
@@ -51,7 +51,7 @@ const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
             letterSpacing={font?.letterSpacing}
 			{...rest}
 		>
-		{children}
+		    {children}
 		</Text>
 	);
 };
