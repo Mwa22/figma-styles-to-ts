@@ -57,6 +57,12 @@ Create a figma.config.json file at the root of your project.
 		"template": "default",
 		"base": ""
 	},
+	"font": {
+		"disable": false,
+		"outDir": "font_out_dir",
+		"react": false,
+		"base": ""
+	},
 	"icon": {
 		"disable": false,
 		"outDir": "icon_out_dir",
