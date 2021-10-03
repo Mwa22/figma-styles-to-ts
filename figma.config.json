@@ -7,9 +7,15 @@
         "base": ""
     },
     "font": {
-        "disable": false,
+        "disable": true,
         "outDir": "./src/constants",
         "template": "react",
+        "base": ""
+    },
+    "shadow": {
+        "disable": false,
+        "outDir": "./src/constants",
+        "template": "palette",
         "base": ""
     },
     "icon": {

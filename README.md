@@ -83,6 +83,7 @@ Create a figma.config.json file at the root of your project.
 ### Color
 
 ⚠️ To generate Colors, you need to publish your styles in figma. ⚠️
+⚠️ Only colors that have `one value` with a `normal blend mode` will be generated.
 
 | Config     | Summary                                                                                                                                       |
 | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -211,6 +212,56 @@ const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
 			{children}
 		</Text>
 	);
+};
+```
+
+### Shadow
+
+⚠️ To generate Shadows, you need to publish your styles in figma. ⚠️
+⚠️ Only `drop shadows` with a `normal blend mode` will be generated.
+
+| Config     | Summary                                                                                                                                           |
+| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `disable`  | Disable Shadow generator (`true` or `false`).                                                                                                     |
+| `outDir`   | The directory to store the code generated (a shadows.ts file will be generated in this folder).                                                   |
+| `template` | Use default `template` or `palette` template (see [Templates](#shadow_templates)) (`'default'` or `'palette'`).                                   |
+| `base`     | Generate all shadows from base path. ex: All my shadows are as CompanyName/Bottom/100. Use base: "CompanyName" to get all shadows of CompanyName. |
+
+#### <a name="shadow_templates"></a>Templates
+
+The `default` template will generate a SHADOWS constant with all shadows recursively.
+Example:
+
+```ts
+const SHADOWS = {
+  CompanyName: {
+    Bottom: {
+      dark: { value: "0px 0.5px 2px rgba(96, 97, 112, 0.16)" }
+      light: { value: "0px 2px 4px rgba(40, 41, 61, 0.04)" }
+    },
+    Top: {
+      value: "0px 2px 4px rgba(96, 97, 112, 0.16), 0px 0px 1px rgba(40, 41, 61, 0.04)"
+    }
+  },
+  CustomShadow: {
+    value: "0px 26px 34px rgba(96, 97, 112, 0.06)"
+  }
+}
+```
+
+The `palette` template will generate a SHADOWS constant with shadows that matches the palette format.
+You must name your shadows as Shadow/100, Shadow/200, ..., Color/500 (only shadows from 100 to 500 will be generated).
+Example:
+
+```ts
+const SHADOWS = {
+	Bottom: {
+		T100: "0px 0.5px 2px rgba(96, 97, 112, 0.16)",
+		T200: "0px 2px 4px rgba(96, 97, 112, 0.16)",
+		T300: "0px 2px 4px rgba(96, 97, 112, 0.16)",
+		T400: "0px 8px 16px rgba(96, 97, 112, 0.16)",
+		T500: "0px 26px 34px rgba(96, 97, 112, 0.06)",
+	},
 };
 ```
 

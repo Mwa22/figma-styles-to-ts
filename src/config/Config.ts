@@ -3,12 +3,14 @@ import * as fs from "fs";
 import ColorConfig from "./ColorConfig";
 import IconConfig from "./IconConfig";
 import FontConfig from "./FontConfig";
+import ShadowConfig from "./ShadowConfig";
 
 class Config {
 	personalToken: string;
 	fileKey: string;
 	color: ColorConfig;
 	font: FontConfig;
+	shadow: ShadowConfig;
 	icon: IconConfig;
 
 	constructor() {
@@ -18,6 +20,7 @@ class Config {
 		this._getFileKey();
 		this.color = new ColorConfig();
 		this.font = new FontConfig();
+		this.shadow = new ShadowConfig();
 		this.icon = new IconConfig();
 	}
 

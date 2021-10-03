@@ -11,6 +11,9 @@ import FontTemplateReact from "./font/FontTemplateReact";
 import { IconTemplateEnum } from "./icons/IconTemplate";
 import IconTemplateDefault from "./icons/IconTemplateDefault";
 import IconTemplateReact from "./icons/IconTemplateReact";
+import { ShadowTemplateEnum } from "./shadow/ShadowTemplate";
+import ShadowTemplateDefault from "./shadow/ShadowTemplateDefault";
+import ShadowTemplatePalette from "./shadow/ShadowTemplatePalette";
 
 async function main() {
 	// Get config
@@ -51,6 +54,23 @@ async function main() {
 				break;
 			}
 		}
+
+		try {
+			await template.init();
+			await template.generate();
+		} catch (err) {
+			console.error(err.message);
+		}
+
+		console.log("-------------\n");
+	}
+
+	if (!config.shadow.disable) {
+		console.log("--- SHADOWS ---\n");
+		const template =
+			config.shadow.template === ShadowTemplateEnum.default
+				? new ShadowTemplateDefault(config, api)
+				: new ShadowTemplatePalette(config, api);
 
 		try {
 			await template.init();
