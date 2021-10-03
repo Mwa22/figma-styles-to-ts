@@ -13,6 +13,7 @@ class ShadowConfig {
 		this._getDisable();
 		if (!this.disable) {
 			this._getOutDir();
+			this._getTemplate();
 			this._getBase();
 		}
 	}
