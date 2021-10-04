@@ -95,6 +95,7 @@ Create a figma.config.json file at the root of your project.
 ### Color
 
 ⚠️ To generate Colors, you need to publish your styles in figma. ⚠️
+
 ⚠️ Only colors that have `one value` with a `normal blend mode` will be generated.
 
 | Config                          | Summary                                                                                                                                       |
@@ -230,6 +231,7 @@ const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
 ### Shadow
 
 ⚠️ To generate Shadows, you need to publish your styles in figma. ⚠️
+
 ⚠️ Only `drop shadows` with a `normal blend mode` will be generated.
 
 | Config                          | Summary                                                                                                                                           |
@@ -330,7 +332,8 @@ Use: <Cross height={20} width={20} fill="#000000" />;
 ### Image
 
 ⚠️ Only images with a `fill scale mode`, with a `normal blend mode` and with `export settings` will be generated.
-⚠️ `PDF format` not supported.
+
+⚠️ `PDF format` is not supported.
 
 | Config                                          | Summary                                                                                     |
 | :---------------------------------------------- | :------------------------------------------------------------------------------------------ |
