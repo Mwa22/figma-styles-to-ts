@@ -14,7 +14,7 @@
   </a>
 </p>
 
-> Generate styles in typescript files and icon components from figma.
+> Generate typescript files with colors, fonts and shadows from figma styles. Generate icons and images from figma file.
 
 ### 🏠 [Homepage](https://github.com/Mwa22/figma-styles-to-ts#readme)
 
