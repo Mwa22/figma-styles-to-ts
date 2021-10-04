@@ -1,6 +1,6 @@
 {
   "name": "figma-styles-to-ts",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "description": "Generate typescript files with colors, fonts and shadows from figma styles. Generate icons and images from figma file.",
   "author": {
     "name": "Thomas Michel",
