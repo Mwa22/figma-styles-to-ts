@@ -71,9 +71,10 @@ class IconTemplate {
 		}
 
 		// Get container
-		const container: Node<"FRAME"> = page.children.find(
-			(doc) => doc.name === this._config.icon.container
-		) as Node<"FRAME">;
+		const container: Node<"FRAME"> | Node<"CANVAS"> =
+			(page.children.find(
+				(doc) => doc.name === this._config.icon.container
+			) as Node<"FRAME">) ?? page;
 
 		if (!container) {
 			throw new Error(

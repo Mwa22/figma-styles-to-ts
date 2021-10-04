@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { IconTemplateEnum } from "../icons/IconTemplate";
 
 class IconConfig {
-	disable: boolean;
+	enable: boolean;
 	outDir: string;
 	page: string;
 	template: IconTemplateEnum;
@@ -12,8 +12,8 @@ class IconConfig {
 	container: string;
 
 	constructor() {
-		this._getDisable();
-		if (!this.disable) {
+		this._getEnable();
+		if (this.enable) {
 			this._getOutDir();
 			this._getPage();
 			this._getContainer();
@@ -22,13 +22,13 @@ class IconConfig {
 		}
 	}
 
-	_getDisable() {
-		this.disable = nconf.get("icon:disable") ?? false;
+	_getEnable() {
+		this.enable = nconf.get("icon:enable") ?? true;
 
-		// Check disable
-		if (typeof this.disable !== "boolean") {
+		// Check enable
+		if (typeof this.enable !== "boolean") {
 			console.error(
-				`Wrong figma config entry: 'icon': { 'disable': ${this.disable} }. You must choose one of these values: [true, false].\n`
+				`Wrong figma config entry: 'icon': { 'enable': ${this.enable} }. You must choose one of these values: [true, false].\n`
 			);
 			process.exit(1);
 		}

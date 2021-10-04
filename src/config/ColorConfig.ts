@@ -4,27 +4,27 @@ import * as fs from "fs";
 import { ColorTemplateEnum } from "../colors/ColorTemplate";
 
 class ColorConfig {
-	disable: boolean;
+	enable: boolean;
 	outDir: string;
 	template: ColorTemplateEnum;
 	base: string;
 
 	constructor() {
-		this._getDisable();
-		if (!this.disable) {
+		this._getEnable();
+		if (this.enable) {
 			this._getOutDir();
 			this._getTemplate();
 			this._getBase();
 		}
 	}
 
-	_getDisable() {
-		this.disable = nconf.get("color:disable") ?? false;
+	_getEnable() {
+		this.enable = nconf.get("color:enable") ?? false;
 
-		// Check disable
-		if (typeof this.disable !== "boolean") {
+		// Check enable
+		if (typeof this.enable !== "boolean") {
 			console.error(
-				`Wrong figma config entry: 'color': { 'disable': ${this.disable} }. You must choose one of these values: [true, false].\n`
+				`Wrong figma config entry: 'color': { 'enable': ${this.enable} }. You must choose one of these values: [true, false].\n`
 			);
 			process.exit(1);
 		}

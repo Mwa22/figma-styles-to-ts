@@ -11,16 +11,16 @@ import FontTemplateReact from "./font/FontTemplateReact";
 import { IconTemplateEnum } from "./icons/IconTemplate";
 import IconTemplateDefault from "./icons/IconTemplateDefault";
 import IconTemplateReact from "./icons/IconTemplateReact";
-import { ShadowTemplateEnum } from "./shadow/ShadowTemplate";
-import ShadowTemplateDefault from "./shadow/ShadowTemplateDefault";
-import ShadowTemplatePalette from "./shadow/ShadowTemplatePalette";
+import { ShadowTemplateEnum } from "./shadows/ShadowTemplate";
+import ShadowTemplateDefault from "./shadows/ShadowTemplateDefault";
+import ShadowTemplatePalette from "./shadows/ShadowTemplatePalette";
 
 async function main() {
 	// Get config
 	const config = new Config();
 	const api = new FigmaAPI(config);
 
-	if (!config.color.disable) {
+	if (config.color.enable) {
 		console.log("--- COLORS ---\n");
 		const template =
 			config.color.template === ColorTemplateEnum.default
@@ -37,7 +37,7 @@ async function main() {
 		console.log("-------------\n");
 	}
 
-	if (!config.font.disable) {
+	if (config.font.enable) {
 		console.log("--- FONTS ---\n");
 		let template;
 		switch (config.font.template) {
@@ -65,7 +65,7 @@ async function main() {
 		console.log("-------------\n");
 	}
 
-	if (!config.shadow.disable) {
+	if (config.shadow.enable) {
 		console.log("--- SHADOWS ---\n");
 		const template =
 			config.shadow.template === ShadowTemplateEnum.default
@@ -82,7 +82,7 @@ async function main() {
 		console.log("-------------\n");
 	}
 
-	if (!config.icon.disable) {
+	if (config.icon.enable) {
 		console.log("--- ICONS ---\n");
 		const template =
 			config.icon.template === IconTemplateEnum.default

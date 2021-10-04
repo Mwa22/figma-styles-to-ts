@@ -1,30 +1,30 @@
 import * as nconf from "nconf";
 import path = require("path");
 import * as fs from "fs";
-import { ShadowTemplateEnum } from "../shadow/ShadowTemplate";
+import { ShadowTemplateEnum } from "../shadows/ShadowTemplate";
 
 class ShadowConfig {
-	disable: boolean;
+	enable: boolean;
 	outDir: string;
 	template: ShadowTemplateEnum;
 	base: string;
 
 	constructor() {
-		this._getDisable();
-		if (!this.disable) {
+		this._getEnable();
+		if (this.enable) {
 			this._getOutDir();
 			this._getTemplate();
 			this._getBase();
 		}
 	}
 
-	_getDisable() {
-		this.disable = nconf.get("shadow:disable") ?? false;
+	_getEnable() {
+		this.enable = nconf.get("shadow:enable") ?? true;
 
-		// Check disable
-		if (typeof this.disable !== "boolean") {
+		// Check enable
+		if (typeof this.enable !== "boolean") {
 			console.error(
-				`Wrong figma config entry: 'shadow': { 'disable': ${this.disable} }. You must choose one of these values: [true, false].\n`
+				`Wrong figma config entry: 'shadow': { 'enable': ${this.enable} }. You must choose one of these values: [true, false].\n`
 			);
 			process.exit(1);
 		}

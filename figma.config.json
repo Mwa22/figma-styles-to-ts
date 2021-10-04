@@ -1,29 +1,29 @@
 {
     "fileKey": "doFlqMGjDWLY0bmRkxYbPM",
     "color": {
-        "disable": true,
+        "enable": false,
         "outDir": "./src/constants",
         "template": "palette",
         "base": ""
     },
     "font": {
-        "disable": true,
+        "enable": false,
         "outDir": "./src/constants",
         "template": "react",
         "base": ""
     },
     "shadow": {
-        "disable": false,
+        "enable": false,
         "outDir": "./src/constants",
         "template": "palette",
         "base": ""
     },
     "icon": {
-        "disable": true,
+        "enable": true,
         "outDir": "./src/components/all/icons",
         "template": "react",
         "storybook": true,
-        "container": "Icons",
-        "page": "📚 Components"
+        "page": "📚 Components",
+        "container": "Icons"
     }
 }

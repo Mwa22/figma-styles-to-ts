@@ -4,27 +4,27 @@ import * as fs from "fs";
 import { FontTemplateEnum } from "../font/FontTemplate";
 
 class FontConfig {
-	disable: boolean;
+	enable: boolean;
 	outDir: string;
 	template: FontTemplateEnum;
 	base: string;
 
 	constructor() {
-		this._getDisable();
-		if (!this.disable) {
+		this._getEnable();
+		if (this.enable) {
 			this._getOutDir();
 			this._getTemplate();
 			this._getBase();
 		}
 	}
 
-	_getDisable() {
-		this.disable = nconf.get("font:disable") ?? false;
+	_getEnable() {
+		this.enable = nconf.get("font:enable") ?? false;
 
-		// Check disable
-		if (typeof this.disable !== "boolean") {
+		// Check enable
+		if (typeof this.enable !== "boolean") {
 			console.error(
-				`Wrong figma config entry: 'font': { 'disable': ${this.disable} }. You must choose one of these values: [true, false].\n`
+				`Wrong figma config entry: 'font': { 'enable': ${this.enable} }. You must choose one of these values: [true, false].\n`
 			);
 			process.exit(1);
 		}

@@ -52,24 +52,30 @@ Create a figma.config.json file at the root of your project.
 {
 	"fileKey": "your_file_key",
 	"color": {
-		"disable": false,
+		"enable": false,
 		"outDir": "color_out_dir",
 		"template": "default",
 		"base": ""
 	},
 	"font": {
-		"disable": false,
+		"enable": false,
 		"outDir": "font_out_dir",
-		"react": false,
+		"template": "default",
+		"base": ""
+	},
+	"shadow": {
+		"enable": false,
+		"outDir": "shadow_out_dir",
+		"template": "default",
 		"base": ""
 	},
 	"icon": {
-		"disable": false,
+		"enable": false,
 		"outDir": "icon_out_dir",
 		"template": "default",
 		"storybook": false,
-		"page": "📚 Components",
-		"container": "Icons"
+		"page": "the_page",
+		"container": "the_icons_container"
 	}
 }
 ```
@@ -85,12 +91,12 @@ Create a figma.config.json file at the root of your project.
 ⚠️ To generate Colors, you need to publish your styles in figma. ⚠️
 ⚠️ Only colors that have `one value` with a `normal blend mode` will be generated.
 
-| Config     | Summary                                                                                                                                       |
-| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `disable`  | Disable Color generator (`true` or `false`).                                                                                                  |
-| `outDir`   | The directory to store the code generated (a colors.ts file will be generated in this folder).                                                |
-| `template` | Use default `template` or `palette` template (see [Templates](#color_templates)) (`'default'` or `'palette'`).                                |
-| `base`     | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName. |
+| Config                          | Summary                                                                                                                                       |
+| :------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enable` (default: `false`)     | Enable Color generator (`true` or `false`).                                                                                                   |
+| `outDir`                        | The directory to store the code generated (a colors.ts file will be generated in this folder).                                                |
+| `template` (default: `default`) | Use `default` template or `palette` template (see [Templates](#color_templates)) (`'default'` or `'palette'`).                                |
+| `base` (default: `all colors`)  | Generate all colors from base path. ex: All my colors are as CompanyName/Black/100. Use base: "CompanyName" to get all colors of CompanyName. |
 
 #### <a name="color_templates"></a>Templates
 
@@ -136,12 +142,12 @@ const COLORS = {
 
 ⚠️ To generate Fonts, you need to publish your styles in figma. ⚠️
 
-| Config     | Summary                                                                                                                                  |
-| :--------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `disable`  | Disable Font generator (`true` or `false`).                                                                                              |
-| `outDir`   | The directory to store the code generated (a fonts.ts file will be generated in this folder).                                            |
-| `template` | Use `default`, `react` or `chakra` template (see [Templates](#font_templates)) (`'default'`, `'reat'` or `'chakra'`).                    |
-| `base`     | Generate all fonts from base path. ex: All my fonts are as CompanyName/P1/Bold. Use base: "CompanyName" to get all fonts of CompanyName. |
+| Config                          | Summary                                                                                                                                  |
+| :------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `enable` (default: `false`)     | Enable Font generator (`true` or `false`).                                                                                               |
+| `outDir`                        | The directory to store the code generated (a fonts.ts file will be generated in this folder).                                            |
+| `template` (default: `default`) | Use `default`, `react` or `chakra` template (see [Templates](#font_templates)) (`'default'`, `'reat'` or `'chakra'`).                    |
+| `base` (default: `all fonts`)   | Generate all fonts from base path. ex: All my fonts are as CompanyName/P1/Bold. Use base: "CompanyName" to get all fonts of CompanyName. |
 
 #### <a name="font_templates"></a>Templates
 
@@ -220,12 +226,12 @@ const Paragraph = ({ children, font, color, ...rest }: ParagraphProps) => {
 ⚠️ To generate Shadows, you need to publish your styles in figma. ⚠️
 ⚠️ Only `drop shadows` with a `normal blend mode` will be generated.
 
-| Config     | Summary                                                                                                                                           |
-| :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `disable`  | Disable Shadow generator (`true` or `false`).                                                                                                     |
-| `outDir`   | The directory to store the code generated (a shadows.ts file will be generated in this folder).                                                   |
-| `template` | Use default `template` or `palette` template (see [Templates](#shadow_templates)) (`'default'` or `'palette'`).                                   |
-| `base`     | Generate all shadows from base path. ex: All my shadows are as CompanyName/Bottom/100. Use base: "CompanyName" to get all shadows of CompanyName. |
+| Config                          | Summary                                                                                                                                           |
+| :------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `enable` (default: `false`)     | Enable Shadow generator (`true` or `false`).                                                                                                      |
+| `outDir`                        | The directory to store the code generated (a shadows.ts file will be generated in this folder).                                                   |
+| `template` (default: `default`) | Use `default` template or `palette` template (see [Templates](#shadow_templates)) (`'default'` or `'palette'`).                                   |
+| `base` (default: `all shadows`) | Generate all shadows from base path. ex: All my shadows are as CompanyName/Bottom/100. Use base: "CompanyName" to get all shadows of CompanyName. |
 
 #### <a name="shadow_templates"></a>Templates
 
@@ -267,14 +273,14 @@ const SHADOWS = {
 
 ### Icon
 
-| Config      | Summary                                                                                                           |
-| :---------- | :---------------------------------------------------------------------------------------------------------------- |
-| `disable`   | Disable Icon generator (`true` or `false`).                                                                       |
-| `outDir`    | The directory to store the code generated.                                                                        |
-| `template`  | Use `default` template or `react` template (see [Templates](#icon_templates)) (`'default'` or `'react'`).         |
-| `storybook` | Generate a index.stories.tsx file (⚠️ only with react template).                                                  |
-| `page`      | The page name of your icons.                                                                                      |
-| `container` | The container name in the page of your icons (⚠️ all your icons must have a unique name and must be a component). |
+| Config                                              | Summary                                                                                                           |
+| :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| `enable` (default: `false`)                         | Enable Icon generator (`true` or `false`).                                                                        |
+| `outDir`                                            | The directory to store the code generated.                                                                        |
+| `template` (default: `default`)                     | Use `default` template or `react` template (see [Templates](#icon_templates)) (`'default'` or `'react'`).         |
+| `storybook` (default: `false`)                      | Generate a index.stories.tsx file (⚠️ only with react template) (`true`or `false`)                                |
+| `page` (default: `the first page`)                  | The page name of your icons.                                                                                      |
+| `container` (default: `all components in the page`) | The container name in the page of your icons (⚠️ all your icons must have a unique name and must be a component). |
 
 #### <a name="icon_templates"></a>Templates
 
