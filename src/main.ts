@@ -11,6 +11,7 @@ import FontTemplateReact from "./font/FontTemplateReact";
 import { IconTemplateEnum } from "./icons/IconTemplate";
 import IconTemplateDefault from "./icons/IconTemplateDefault";
 import IconTemplateReact from "./icons/IconTemplateReact";
+import ImageTemplateDefault from "./images/ImageTemplateDefault";
 import { ShadowTemplateEnum } from "./shadows/ShadowTemplate";
 import ShadowTemplateDefault from "./shadows/ShadowTemplateDefault";
 import ShadowTemplatePalette from "./shadows/ShadowTemplatePalette";
@@ -88,6 +89,20 @@ async function main() {
 			config.icon.template === IconTemplateEnum.default
 				? new IconTemplateDefault(config, api)
 				: new IconTemplateReact(config, api);
+
+		try {
+			await template.init();
+			await template.generate();
+		} catch (err) {
+			console.error(err.message);
+		}
+
+		console.log("-------------\n");
+	}
+
+	if (config.image.enable) {
+		console.log("--- IMAGES ---\n");
+		const template = new ImageTemplateDefault(config, api);
 
 		try {
 			await template.init();

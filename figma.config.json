@@ -19,11 +19,17 @@
         "base": ""
     },
     "icon": {
-        "enable": true,
+        "enable": false,
         "outDir": "./src/components/all/icons",
         "template": "react",
         "storybook": true,
         "page": "📚 Components",
         "container": "Icons"
+    },
+    "image": {
+        "enable" : true,
+        "outDir": "./public/images",
+        "page": "🎨 Styleguide",
+        "container": "Terrain"
     }
 }

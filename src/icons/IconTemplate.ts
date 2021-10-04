@@ -1,6 +1,6 @@
 import FigmaAPI from "../api/FigmaAPI";
 import Config from "../config/Config";
-import { Node } from "../types/ast";
+import { ImageType, Node } from "../types/ast";
 import * as fs from "fs";
 
 export enum IconTemplateEnum {
@@ -17,7 +17,6 @@ export interface Icon {
 class IconTemplate {
 	_config: Config;
 	_api: FigmaAPI;
-	_nodes: any;
 	_icons: Icon[];
 
 	constructor(config: Config, api: FigmaAPI) {
@@ -98,11 +97,12 @@ class IconTemplate {
 	async _getIconImages() {
 		const icon_ids = await this._getIconIds();
 		const images = await this._api.getImagesByNodeIds(
-			icon_ids.map((icon) => icon.id)
+			icon_ids.map((icon) => icon.id),
+			ImageType.SVG
 		);
 		this._icons = icon_ids.map((icon) => {
 			const image = images.find((i) => i.id === icon.id);
-			icon.svg = image.svg;
+			icon.svg = image.image;
 			return icon;
 		});
 	}

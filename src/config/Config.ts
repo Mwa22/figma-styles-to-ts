@@ -4,6 +4,7 @@ import ColorConfig from "./ColorConfig";
 import IconConfig from "./IconConfig";
 import FontConfig from "./FontConfig";
 import ShadowConfig from "./ShadowConfig";
+import ImageConfig from "./ImageConfig";
 
 class Config {
 	personalToken: string;
@@ -12,6 +13,7 @@ class Config {
 	font: FontConfig;
 	shadow: ShadowConfig;
 	icon: IconConfig;
+	image: ImageConfig;
 
 	constructor() {
 		nconf.argv().file("./figma.config.json");
@@ -22,6 +24,7 @@ class Config {
 		this.font = new FontConfig();
 		this.shadow = new ShadowConfig();
 		this.icon = new IconConfig();
+		this.image = new ImageConfig();
 	}
 
 	async _getPersonalToken() {

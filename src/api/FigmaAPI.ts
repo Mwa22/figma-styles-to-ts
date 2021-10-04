@@ -7,7 +7,8 @@ import {
 } from "../types/api";
 import axios, { AxiosInstance } from "axios";
 import Config from "../config/Config";
-import { Node } from "../types/ast";
+import { ImageType, Node } from "../types/ast";
+import { ImageFlat } from "../images/ImageTemplate";
 
 class FigmaAPI {
 	_instance: AxiosInstance;
@@ -43,22 +44,60 @@ class FigmaAPI {
 			.then(({ data }: { data: GetFileNodesResult }) => data?.nodes);
 	}
 
-	getImagesByNodeIds(node_ids: string[]) {
+	getImagesByNodeIds(
+		node_ids: string[],
+		format: ImageType
+	): Promise<{ id: string; image: string }[]> {
 		return this._instance
 			.get(
 				`/images/${this._config.fileKey}?ids=${node_ids.join(
 					","
-				)}&format=svg`
+				)}&format=${format.toLocaleLowerCase()}`
 			)
 			.then(({ data }: { data: GetImageResult }) => {
 				const promises = Object.entries(data?.images).map(
 					async ([id, url]) => {
 						try {
 							const r = await axios.get(url);
-							return { id: id, svg: r.data as string };
+							return { id: id, image: r.data as string };
 						} catch (err) {
 							console.error(
-								`Couldn't fetch Icon (${url}): ${err.message}`
+								`Couldn't fetch Image (${url}): ${err.message}`
+							);
+						}
+					}
+				);
+
+				return Promise.all(promises);
+			});
+	}
+
+	getImagesWithExportSettings(
+		images: ImageFlat[],
+		format: ImageType,
+		scale: number
+	): Promise<ImageFlat[]> {
+		return this._instance
+			.get(
+				`/images/${this._config.fileKey}?ids=${images
+					.map((i) => i.id)
+					.join(
+						","
+					)}&format=${format.toLocaleLowerCase()}&scale=${scale}`
+			)
+			.then(({ data }: { data: GetImageResult }) => {
+				const promises = Object.entries(data?.images).map(
+					async ([id, url]) => {
+						try {
+							const r = await axios.get(url, {
+								responseType: "stream",
+							});
+							const image = images.find((i) => i.id === id);
+							image.data = r.data;
+							return image;
+						} catch (err) {
+							console.error(
+								`Couldn't fetch Image (${url}): ${err.message}`
 							);
 						}
 					}

@@ -76,6 +76,12 @@ Create a figma.config.json file at the root of your project.
 		"storybook": false,
 		"page": "the_page",
 		"container": "the_icons_container"
+	},
+	"image": {
+		"enable": false,
+		"outDir": "image_out_dir",
+		"page": "the_page",
+		"container": "the_images_container"
 	}
 }
 ```
@@ -320,6 +326,18 @@ export default Cross;
 
 Use: <Cross height={20} width={20} fill="#000000" />;
 ```
+
+### Image
+
+⚠️ Only images with a `fill scale mode`, with a `normal blend mode` and with `export settings` will be generated.
+⚠️ `PDF format` not supported.
+
+| Config                                          | Summary                                                                                     |
+| :---------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| `enable` (default: `false`)                     | Enable Image generator (`true` or `false`).                                                 |
+| `outDir`                                        | The directory to store the images generated.                                                |
+| `page` (default: `the first page`)              | The page name of your images.                                                               |
+| `container` (default: `all images in the page`) | The container name in the page of your images (⚠️ all your images must have a unique name). |
 
 ## Author
 
